@@ -67,9 +67,13 @@ const galleryImages = [
     <title>Galería de Fotos</title>
   </head>
   <body>
-    <header>
-      <h1>Galería de Fotos</h1>
-    </header>
+<header>
+  <h1>Galería de Fotos</h1>
+  <nav>
+    <a href="/fotografos">Fotógrafos</a>
+    <a href="/historia">Historia</a>
+  </nav>
+</header>
 
     <main>
       <div class="gallery" id="gallery">
@@ -82,7 +86,7 @@ const galleryImages = [
     <div id="myModal" class="modal" aria-hidden="true">
       <span class="close" aria-label="Cerrar">&times;</span>
       <img class="modal-content" id="modalImg" alt="" />
-      <div id="caption"></div>
+      <div class="modal-caption" id="caption"></div>
     </div>
 
     <script>
