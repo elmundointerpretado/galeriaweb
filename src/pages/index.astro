@@ -1,0 +1,149 @@
+﻿---
+import '../styles/gallery.css';
+
+const galleryImages = [
+  {
+    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRoHbSp_iy6uRU2MWmvJe4BMcQwz4x6G7lghhDO5FhTOcDQPk7MfeqPrcpfqpDK8yC42NuUIJEzhMnHyo3cCOYtojPQxxMDBsK64dU4uCaWg&s=10',
+    alt: 'Paisaje de montaña',
+    photographer: 'Sebastiao Salgado',
+    year: 2021,
+  },
+  {
+    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpnfoNlsT9ds7LKoC8VClFlvLaW5PDk3Wp-I3dsc1A_ndic-X0ZNbbKSdw-rZQ6V9THp3o_m-qC4fwNMA8-h5Ts0eY8D6Dy1Qmggaz7U2S&s=10',
+    alt: 'Callejón urbano',
+    photographer: 'Sebastiao Salgado',
+    year: 2020,
+  },
+  {
+    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlDSAJC9Ytse23yIqj8qysS4On6Pj2jgKgSMhe3amRy2nsPzVOQSL3nRo-56Y9ZeodgENiHrOo-MXIZyC_u98yMiz6K94IxSNgo2Q0M6gEVg&s=10',
+    alt: 'Retrato de mujer',
+    photographer: 'Lucía Gómez',
+    year: 2022,
+  },
+  {
+    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrG-bRg7eim-TPRjMKN9wcW2wALM0GEVK4I27uYWl5chw-RY_OIKpCJbVbhZLMKp-CcePHRuMPaM2KXuZXAEdYuwJEZWHAAFTUZKqti_dc&s=10',
+    alt: 'Bosque de otoño',
+    photographer: 'Richard Avedon',
+    year: 2019,
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80',
+    alt: 'Playa al atardecer',
+    photographer: 'Richard Avedon',
+    year: 2023,
+  },
+  {
+    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSktu5BbuQGobQG1KcbpOb-dWpBbx9k89L_pDcAN5qi44iJ7cK7JvO1yg_1nSXULkQDWaVP1s-0RO-XI0_A9QIZbIqmQYdtLRLDhMUeCoZ&s=10',
+    alt: 'Gemelas idénticas',
+    photographer: 'Diane Arbus',
+    year: 2021,
+  },
+  {
+    src: 'https://mallorcafotografica.com/wp-content/uploads/2013/05/diane-arbus-child-with-a-toy-hand-grenade-in-central-park-nyc-1962.jpg',
+    alt: 'Child with a toy hand grenade in Central Park, NYC',
+    photographer: 'Diane Arbus',
+    year: 1962,
+  },
+  {
+    src: 'https://imagenes.elpais.com/resizer/v2/SECN7QGJP5HPHEJ2T4NXSKBYYA.jpg?auth=139bf646cb28733b7ed765cb97e3adfb4983e6d447e7a065956b9828c435e429&width=414',
+    alt: 'Los fantasmas londinenses',
+    photographer: 'Sergio Larraín',
+    year: 1959,
+  },
+  {
+    src: 'https://revistalasartes.com/wp-content/uploads/2026/07/sergio-larrain-02-693x1024.jpg',
+    alt: 'El vagabundo de Valparaiso',
+    photographer: 'Sergio Larraín',
+    year: 2021,
+  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galería de Fotos</title>
+  </head>
+  <body>
+    <header>
+      <h1>Galería de Fotos</h1>
+    </header>
+
+    <main>
+      <div class="gallery" id="gallery">
+        {galleryImages.map((img) => (
+          <img src={img.src} alt={img.alt} data-photo={JSON.stringify(img)} />
+        ))}
+      </div>
+    </main>
+
+    <div id="myModal" class="modal" aria-hidden="true">
+      <span class="close" aria-label="Cerrar">&times;</span>
+      <img class="modal-content" id="modalImg" alt="" />
+      <div id="caption"></div>
+    </div>
+
+    <script>
+      type Photo = {
+        src: string;
+        alt: string;
+        photographer: string;
+        year: number;
+      };
+
+      const modalElement = document.getElementById('myModal');
+      const modalImgElement = document.getElementById('modalImg');
+      const captionElement = document.getElementById('caption');
+      const closeButtonElement = document.querySelector('.close');
+      const galleryElement = document.getElementById('gallery');
+
+      if (!modalElement || !modalImgElement || !captionElement || !galleryElement || !closeButtonElement) {
+        throw new Error('Faltan elementos del DOM para la galería y el modal.');
+      }
+
+      const modal = modalElement as HTMLDivElement;
+      const modalImg = modalImgElement as HTMLImageElement;
+      const caption = captionElement as HTMLDivElement;
+      const closeButton = closeButtonElement as HTMLSpanElement;
+      const gallery = galleryElement as HTMLDivElement;
+
+      function openModal(img: Photo): void {
+        modal.style.display = 'block';
+        modalImg.src = img.src;
+        modalImg.alt = img.alt;
+        caption.innerHTML = `${img.alt} – Fotógrafo: ${img.photographer}, Año: ${img.year}`;
+      }
+
+      const photoItems = Array.from(gallery.querySelectorAll('img')) as HTMLImageElement[];
+
+      photoItems.forEach((img: HTMLImageElement) => {
+        img.addEventListener('click', () => {
+          const rawPhoto = img.getAttribute('data-photo');
+          if (!rawPhoto) return;
+
+          const photo = JSON.parse(rawPhoto) as Partial<Photo>;
+          if (photo.src && photo.alt && photo.photographer && typeof photo.year === 'number') {
+            openModal({
+              src: photo.src,
+              alt: photo.alt,
+              photographer: photo.photographer,
+              year: photo.year,
+            });
+          }
+        });
+      });
+
+      closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+
+      window.addEventListener('click', (event: MouseEvent) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>
